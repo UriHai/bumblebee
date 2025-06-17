@@ -87,16 +87,23 @@ unsigned int getPositiveInteger() {
  * @brief fill array with prime numbers
  * 
  * @param primeNumbers                  [OUT]       The array
- * @param numberOfPrimesToFind          [IN]        The number of primes to find 
+ * @param numberOfPrimesToFind          [IN]        The number of primes to find i.e the array's length
  */
 void fillPrimes(unsigned int* const primeNumbers, unsigned int numberOfPrimesToFind) {
     unsigned int numberOfPrimesFound = 0;
-    unsigned int current = 2;
-    bool isCurrentNumberPrime = false;
+    unsigned int currentNumber = 2;
+    bool isCurrentNumberPrime = true;
 
     while (numberOfPrimesFound < numberOfPrimesToFind) {
         isCurrentNumberPrime = isPrime(currentNumber);
-        while (isCurrentNumberPrime) }
+        while (!isCurrentNumberPrime) {
+            currentNumber++;
+            isCurrentNumberPrime = isPrime(currentNumber);
+        }
+        primeNumbers[numberOfPrimesFound] = currentNumber;
+        numberOfPrimesFound++;
+        currentNumber++;
+    }
 }
 
 /**
@@ -108,7 +115,7 @@ void fillPrimes(unsigned int* const primeNumbers, unsigned int numberOfPrimesToF
 void printPrimesArray(const unsigned int* const primeNumbers, unsigned int length) {
     unsigned int i = 0;
 
-    cout << "Here are the first " << length << "prime numbers" << endl;
+    cout << "Here are the first " << length << " prime numbers" << endl;
     for (i = 0; i < length - 1; i++) {
         cout << primeNumbers[i] << ", ";
     }
@@ -120,7 +127,7 @@ int main() {
     unsigned int* primeNumbers = new unsigned int[numberOfPrimesToFind];
     fillPrimes(primeNumbers, numberOfPrimesToFind);
     printPrimesArray(primeNumbers, numberOfPrimesToFind);
-    delete primeNumbers;
+    delete[] primeNumbers;
 
     return 0;
 }
