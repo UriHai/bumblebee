@@ -1,11 +1,12 @@
 #include <iostream>
+#include <cmath>
 
-using std::cin;
+#include "UserInput.h"
+
+const unsigned int FIRST_PRIME = 2;
+
 using std::cout;
 using std::endl;
-using std::numeric_limits;
-using std::sqrt;
-using std::streamsize;
 
 /**
  * @brief Check wether a number is prime
@@ -14,7 +15,7 @@ using std::streamsize;
  * @return true if num is prime, false otherwise
  */
 bool isPrime(unsigned int num) {
-    unsigned int divisor = 2;
+    unsigned int divisor = FIRST_PRIME;
     if (num <= 1) {
         return false;
     }
@@ -22,65 +23,12 @@ bool isPrime(unsigned int num) {
     // Iterate over all possible divisors (from 2 to half of the original
     // number). If there is a divisor such that num % divisor equals 0 - return
     // false. If no such divisor was found, return true.
-    for (divisor = 2; divisor < num / 2 + 1; divisor++) {
+    for (divisor = FIRST_PRIME; divisor < num / 2 + 1; divisor++) {
         if (num % divisor == 0) {
             return false;
         }
     }
     return true;
-}
-
-// Ignore all characters in stdin up to and including
-void ignoreLine() { cin.ignore(numeric_limits<streamsize>::max(), '\n'); }
-
-/**
- * @brief Check if extraction failed and clear stdin if so
- *
- * @return wether the extraction failed
- */
-bool clearFailedExtraction() {
-    if (!cin) {
-        cin.clear();
-        return true;
-    }
-
-    return false;
-}
-
-/**
- * @brief Check whether stdin has unextracted input
- *
- * @return whether stdin has unextracted input
- */
-bool hasUnextractedInput() { return !cin.eof() && cin.peek() != '\n'; }
-
-/**
- * @brief Input a positive integer
- *
- * @return the integer
- */
-unsigned int getPositiveInteger() {
-    int number = 0;
-    unsigned int positiveInteger = 0;
-    while (true) {
-        cout << "Enter how many prime number you would like me to find: ";
-        cin >> number;
-        // clearFailedExtraction() will return true if std::cin.fail() (or
-        // simply !std::cin) i.e. if the extraction failed
-        if (clearFailedExtraction() || hasUnextractedInput()) {
-            ignoreLine();
-            cout << "Invalid input. Please try again" << endl;
-            continue;
-        }
-
-        if (number <= 0) {
-            cout << "Number must be positive!" << endl;
-            continue;
-        }
-
-        positiveInteger = static_cast<unsigned int>(number);
-        return positiveInteger;
-    }
 }
 
 /**
@@ -91,17 +39,15 @@ unsigned int getPositiveInteger() {
  */
 void fillPrimes(unsigned int* const primeNumbers, unsigned int numberOfPrimesToFind) {
     unsigned int numberOfPrimesFound = 0;
-    unsigned int currentNumber = 2;
+    unsigned int currentNumber = FIRST_PRIME;
     bool isCurrentNumberPrime = true;
 
     while (numberOfPrimesFound < numberOfPrimesToFind) {
         isCurrentNumberPrime = isPrime(currentNumber);
-        while (!isCurrentNumberPrime) {
-            currentNumber++;
-            isCurrentNumberPrime = isPrime(currentNumber);
+        if (isCurrentNumberPrime) {
+            primeNumbers[numberOfPrimesFound] = currentNumber;
+            numberOfPrimesFound++;
         }
-        primeNumbers[numberOfPrimesFound] = currentNumber;
-        numberOfPrimesFound++;
         currentNumber++;
     }
 }

@@ -18,5 +18,13 @@
     <ClCompile Include="BumbleBee.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UserInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UserInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
